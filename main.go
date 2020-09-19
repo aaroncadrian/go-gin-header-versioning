@@ -9,7 +9,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	v := versioning.NewUtil("X-Header")
+	v := versioning.NewUtil("X-Version")
 
 	r.GET("/ping", v.MapVersions(versioning.VersionMap{
 		"2020-09-19": func(c *gin.Context) {
