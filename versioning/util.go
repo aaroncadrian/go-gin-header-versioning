@@ -7,7 +7,7 @@ import (
 )
 
 type Util interface {
-	RegisterVersionMap(versionMap VersionMap) []gin.HandlerFunc
+	MapVersions(versionMap VersionMap) []gin.HandlerFunc
 }
 
 type versionUtil struct {
@@ -20,7 +20,7 @@ func NewUtil(headerKey string) Util {
 	}
 }
 
-func (u *versionUtil) RegisterVersionMap(_ VersionMap) []gin.HandlerFunc {
+func (u *versionUtil) MapVersions(_ VersionMap) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		u.checkIfHeaderIsPresent(),
 	}
