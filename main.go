@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/aaroncadrian/go-gin-header-versioning/versioning"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -8,11 +9,15 @@ import (
 func main() {
 	r := gin.Default()
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	v := versioning.NewUtil("X-Header")
+
+	r.GET("/ping", v.RegisterVersionMap(versioning.VersionMap{
+		"2020-09-19": func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "pong",
+			})
+		},
+	})...)
 
 	err := r.Run()
 
