@@ -10,28 +10,28 @@ type Util interface {
 	MapVersions(versionMap VersionMap) []gin.HandlerFunc
 }
 
-type versionUtil struct {
+type headerVersionUtil struct {
 	HeaderKey string
 }
 
-func NewUtil(headerKey string) Util {
-	return &versionUtil{
+func NewHeaderVersioningUtil(headerKey string) Util {
+	return &headerVersionUtil{
 		HeaderKey: headerKey,
 	}
 }
 
-func (u *versionUtil) MapVersions(versions VersionMap) []gin.HandlerFunc {
+func (u *headerVersionUtil) MapVersions(versions VersionMap) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		u.checkIfHeaderIsPresent(),
 		u.handleVersion(versions),
 	}
 }
 
-func (u versionUtil) getVersion(context *gin.Context) string {
+func (u headerVersionUtil) getVersion(context *gin.Context) string {
 	return context.GetHeader(u.HeaderKey)
 }
 
-func (u versionUtil) handleVersion(versionMap VersionMap) gin.HandlerFunc {
+func (u headerVersionUtil) handleVersion(versionMap VersionMap) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		version := u.getVersion(context)
 
@@ -45,7 +45,7 @@ func (u versionUtil) handleVersion(versionMap VersionMap) gin.HandlerFunc {
 	}
 }
 
-func (u *versionUtil) checkIfHeaderIsPresent() gin.HandlerFunc {
+func (u *headerVersionUtil) checkIfHeaderIsPresent() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		if u.getVersion(context) == "" {
 			_ = context.AbortWithError(http.StatusBadRequest, fmt.Errorf(`"%v" header is required`, u.HeaderKey))
