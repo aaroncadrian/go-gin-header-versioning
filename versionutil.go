@@ -6,19 +6,29 @@ import (
 	"net/http"
 )
 
-type VersionUtil struct {
+type VersionUtil interface {
+	RegisterVersionMap(versionMap VersionMap) []gin.HandlerFunc
+}
+
+type versionUtil struct {
 	HeaderKey string
 }
 
 type VersionMap = map[string]gin.HandlerFunc
 
-func (u VersionUtil) RegisterVersionMap(_ VersionMap) []gin.HandlerFunc {
-	return []gin.HandlerFunc{
-		u.CheckIfHeaderIsPresent(),
+func NewVersionUtil(headerKey string) VersionUtil {
+	return &versionUtil{
+		HeaderKey: headerKey,
 	}
 }
 
-func (u VersionUtil) CheckIfHeaderIsPresent() gin.HandlerFunc {
+func (u *versionUtil) RegisterVersionMap(_ VersionMap) []gin.HandlerFunc {
+	return []gin.HandlerFunc{
+		u.checkIfHeaderIsPresent(),
+	}
+}
+
+func (u *versionUtil) checkIfHeaderIsPresent() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		key := u.HeaderKey
 
