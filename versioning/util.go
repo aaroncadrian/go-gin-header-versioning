@@ -20,9 +20,10 @@ func NewUtil(headerKey string) Util {
 	}
 }
 
-func (u *versionUtil) MapVersions(_ VersionMap) []gin.HandlerFunc {
+func (u *versionUtil) MapVersions(versions VersionMap) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		u.checkIfHeaderIsPresent(),
+		u.handleVersion(versions),
 	}
 }
 
