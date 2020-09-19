@@ -1,4 +1,4 @@
-package main
+package versioning
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-type VersionUtil interface {
+type Util interface {
 	RegisterVersionMap(versionMap VersionMap) []gin.HandlerFunc
 }
 
@@ -16,7 +16,7 @@ type versionUtil struct {
 
 type VersionMap = map[string]gin.HandlerFunc
 
-func NewVersionUtil(headerKey string) VersionUtil {
+func NewUtil(headerKey string) Util {
 	return &versionUtil{
 		HeaderKey: headerKey,
 	}
