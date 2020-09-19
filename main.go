@@ -1,6 +1,9 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"log"
+)
 
 func main() {
 	r := gin.Default()
@@ -11,5 +14,9 @@ func main() {
 		})
 	})
 
-	r.Run(":8081")
+	err := r.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
