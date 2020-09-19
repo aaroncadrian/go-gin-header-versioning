@@ -14,8 +14,6 @@ type versionUtil struct {
 	HeaderKey string
 }
 
-type VersionMap = map[string]gin.HandlerFunc
-
 func NewUtil(headerKey string) Util {
 	return &versionUtil{
 		HeaderKey: headerKey,
